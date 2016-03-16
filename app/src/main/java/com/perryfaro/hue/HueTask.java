@@ -3,75 +3,194 @@ package com.perryfaro.hue;
 import android.os.AsyncTask;
 import android.util.Log;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
 
-public class HueTask extends AsyncTask<String, Void, String> {
-
-    // Static's
-    private static final String urlString = "http://145.102.69.166:8080/api/newdeveloper";
-
-    private String action;
-
-    // Constructor, set listener
-    public HueTask(String action) {
-        System.out.println("Inner class");
-        this.action = action;
-    }
+public class HueTask extends AsyncTask<HueTaskParams, Void, String> {
 
     @Override
-    protected String doInBackground(String... params) {
-        System.out.println("We komen hier");
-        try {
+    protected String doInBackground(HueTaskParams... params) {
+        String urlString = params[0].urlString;
+        String action = params[0].action;
+        String requestJson = params[0].requestJson;
+        String requestMethod = params[0].requestMethod;
+        String response = "";
 
-            System.out.println("We komen hier 1");
+        if(requestMethod == "PUT") {
+            Log.e("TAG", "onPutExecute");
+            this.setHueTaskData(urlString, action, requestJson, requestMethod);
+
+        }else{
+            Log.e("TAG", "onGetExecute");
+            this.getHueTaskData(urlString, action, requestMethod);
+        }
+        return response;
+    }
+
+    protected void onProgressUpdate(Integer... progress) {
+        Log.i("TAG", progress.toString());
+    }
+
+    protected void onPostExecute(String response) {
+        //Log.i(TAG, response);
+
+        // parse JSON and inform caller
+        JSONObject jsonObject;
+
+        try {
+            // Top level json object
+            jsonObject = new JSONObject(response);
+
+            // Get all users and start looping
+            //JSONArray users = jsonObject.getJSONArray("action");
+
+            jsonObject.getJSONObject("action");
+            System.out.println(jsonObject);
+            /*
+            for(int idx = 0; idx < users.length(); idx++) {
+                // array level objects and get user
+                JSONObject array = users.getJSONObject(idx);
+                JSONObject user = array.getJSONObject("user");
+
+                // Get title, first and last name
+                JSONObject name = user.getJSONObject("name");
+                String title = name.getString("title");
+                String firstName = name.getString("first");
+                String lastName = name.getString("last");
+                Log.i("TAG", title + " " + firstName + ", " + lastName);
+
+                // Get image url
+                JSONObject picture = user.getJSONObject("picture");
+                String imageurl = picture.getString("large");
+                Log.i("TAG", imageurl);
+
+                // Create new Person object
+                Person p = new Person();
+                p.first = firstName;
+                p.last = lastName;
+                p.title = title;
+                p.imageUrl = imageurl;
+
+                // call back with new person data
+                listener.onRandomUserAvailable(p);
+
+            }*/
+        } catch( JSONException ex) {
+            Log.e("TAG", ex.getLocalizedMessage());
+        }
+    }
+
+    void getHueTaskData(String urlString, String action, String requestMethod){
+       // HttpClient client = new DefaultHttpClient();
+        InputStream inputStream = null;
+        int responsCode = -1;
+        String response = "";
+        try {
+            System.out.println("Get 1");
             URL url = new URL(urlString + action);
             URLConnection urlConnection = url.openConnection();
 
-
             if (!(urlConnection instanceof HttpURLConnection)) {
                 // Url
-                System.out.println("We komen hier2");
-                return null;
+                System.out.println("Get 2");
+                //return null;
             }
 
             HttpURLConnection httpConnection = (HttpURLConnection) urlConnection;
             httpConnection.setAllowUserInteraction(false);
             httpConnection.setInstanceFollowRedirects(true);
-            httpConnection.setRequestMethod("PUT");
-            OutputStreamWriter out = new OutputStreamWriter(
-                    httpConnection.getOutputStream());
-            out.write("{\"on\":false, \"sat\":254, \"bri\":254,\"hue\":10000}");
-            out.close();
-            httpConnection.getInputStream();
+            httpConnection.setRequestMethod(requestMethod);
             httpConnection.connect();
 
+            responsCode = httpConnection.getResponseCode();
 
+            if (responsCode == HttpURLConnection.HTTP_OK) {
+                inputStream = httpConnection.getInputStream();
+                response = getStringFromInputStream(inputStream);
+                Log.i("TAG", response);
+            }
         } catch (MalformedURLException e) {
             System.out.println("Exception1");
             Log.e("TAG", e.getLocalizedMessage());
-            return null;
+            //return null;
         } catch (IOException e) {
             System.out.println("Exception2");
             Log.e("TAG", e.getLocalizedMessage());
-            return null;
+            //return null;
         }
-        System.out.println("Voor return");
-        return "";
+        System.out.println("Get last");
     }
 
+    void setHueTaskData(String urlString, String action, String requestJson, String requestMethod){
+        try {
+            URL url = new URL(urlString + action);
+            URLConnection urlConnection = url.openConnection();
 
-    protected void onPostExecute(String response) {
+            if (!(urlConnection instanceof HttpURLConnection)) {
+                Log.i("TAG", "Geen http connectie");
+            }
 
+            HttpURLConnection httpConnection = (HttpURLConnection) urlConnection;
+            httpConnection.setAllowUserInteraction(false);
+            httpConnection.setInstanceFollowRedirects(true);
+            httpConnection.setRequestMethod(requestMethod);
 
+            OutputStreamWriter out = new OutputStreamWriter(
+                    httpConnection.getOutputStream());
+            out.write(requestJson);
+            out.close();
+
+            httpConnection.getInputStream();
+            httpConnection.connect();
+
+        } catch (MalformedURLException e) {
+            Log.e("TAG", e.getLocalizedMessage());
+        } catch (IOException e) {
+            Log.e("TAG", e.getLocalizedMessage());
+        }
     }
 
+    //
+    // convert InputStream to String
+    //
+    private static String getStringFromInputStream(InputStream is) {
 
+        BufferedReader br = null;
+        StringBuilder sb = new StringBuilder();
 
+        String line;
+        try {
+
+            br = new BufferedReader(new InputStreamReader(is));
+            while ((line = br.readLine()) != null) {
+                sb.append(line);
+            }
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+            if (br != null) {
+                try {
+                    br.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+
+        return sb.toString();
+    }
 }
 
 

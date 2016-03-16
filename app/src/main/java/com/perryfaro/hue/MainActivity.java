@@ -1,17 +1,20 @@
 package com.perryfaro.hue;
 
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.Button;
+import android.widget.Switch;
+import android.widget.CompoundButton;
+import android.widget.CompoundButton.OnCheckedChangeListener;
+
+import org.json.JSONObject;
 
 public class MainActivity extends AppCompatActivity {
 
-    Button button;
+    Switch groupSwitch;
+    String url = "http://192.168.2.7:8080/api/newdeveloper";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -20,24 +23,26 @@ public class MainActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
+        HueTaskParams firstParams = new HueTaskParams(url, "/groups/1", "", "GET");
+        HueTask firstHueTask = new HueTask();
+        firstHueTask.execute(firstParams);
+
+        System.out.println(firstHueTask);
+
+        groupSwitch = (Switch) findViewById(R.id.groupSwitch);
+        groupSwitch.setChecked(true);
+        groupSwitch.setOnCheckedChangeListener(new OnCheckedChangeListener() {
             @Override
-            public void onClick(View view) {
-                HueTask test =  new HueTask("/groups/1/action");
-                test.execute();
-            }
-        });
-
-
-        button = (Button) findViewById(R.id.button);
-
-        button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                System.out.println("on click");
-                HueTask test =  new HueTask("/groups/1/action");
-                test.execute();
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if (isChecked) {
+                    HueTaskParams params = new HueTaskParams(url, "/groups/1/action", "{\"on\":true}", "PUT");
+                    HueTask hueTask = new HueTask();
+                    hueTask.execute(params);
+                } else {
+                    HueTaskParams params = new HueTaskParams(url, "/groups/1/action", "{\"on\":false}", "PUT");
+                    HueTask hueTask = new HueTask();
+                    hueTask.execute(params);
+                }
             }
         });
     }

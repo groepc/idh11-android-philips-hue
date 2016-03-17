@@ -52,40 +52,9 @@ public class HueTask extends AsyncTask<HueTaskParams, Void, String> {
             // Top level json object
             jsonObject = new JSONObject(response);
 
-            // Get all users and start looping
-            //JSONArray users = jsonObject.getJSONArray("action");
-
             jsonObject.getJSONObject("action");
             System.out.println(jsonObject);
-            /*
-            for(int idx = 0; idx < users.length(); idx++) {
-                // array level objects and get user
-                JSONObject array = users.getJSONObject(idx);
-                JSONObject user = array.getJSONObject("user");
 
-                // Get title, first and last name
-                JSONObject name = user.getJSONObject("name");
-                String title = name.getString("title");
-                String firstName = name.getString("first");
-                String lastName = name.getString("last");
-                Log.i("TAG", title + " " + firstName + ", " + lastName);
-
-                // Get image url
-                JSONObject picture = user.getJSONObject("picture");
-                String imageurl = picture.getString("large");
-                Log.i("TAG", imageurl);
-
-                // Create new Person object
-                Person p = new Person();
-                p.first = firstName;
-                p.last = lastName;
-                p.title = title;
-                p.imageUrl = imageurl;
-
-                // call back with new person data
-                listener.onRandomUserAvailable(p);
-
-            }*/
         } catch( JSONException ex) {
             Log.e("TAG", ex.getLocalizedMessage());
         }

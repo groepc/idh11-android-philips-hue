@@ -19,21 +19,24 @@ import java.net.URLConnection;
 
 public class HueTask extends AsyncTask<HueTaskParams, Void, String> {
 
+    private AsyncResponse delegate = null;
+
+    public HueTask(AsyncResponse delegate) {
+        this.delegate = delegate;
+    }
+
     @Override
     protected String doInBackground(HueTaskParams... params) {
         String urlString = params[0].urlString;
         String action = params[0].action;
         String requestJson = params[0].requestJson;
         String requestMethod = params[0].requestMethod;
-        String response = "";
+        String response;
 
         if(requestMethod == "PUT") {
-            Log.e("TAG", "onPutExecute");
-            this.setHueTaskData(urlString, action, requestJson, requestMethod);
-
+            response = this.putHueTaskData(urlString, action, requestJson, requestMethod);
         }else{
-            Log.e("TAG", "onGetExecute");
-            this.getHueTaskData(urlString, action, requestMethod);
+            response = this.getHueTaskData(urlString, action, requestMethod);
         }
         return response;
     }
@@ -43,24 +46,18 @@ public class HueTask extends AsyncTask<HueTaskParams, Void, String> {
     }
 
     protected void onPostExecute(String response) {
-        //Log.i(TAG, response);
-
         // parse JSON and inform caller
         JSONObject jsonObject;
 
         try {
-            // Top level json object
             jsonObject = new JSONObject(response);
-
-            jsonObject.getJSONObject("action");
-            System.out.println(jsonObject);
-
+            delegate.processFinish(jsonObject);
         } catch( JSONException ex) {
             Log.e("TAG", ex.getLocalizedMessage());
         }
     }
 
-    void getHueTaskData(String urlString, String action, String requestMethod){
+    public String getHueTaskData(String urlString, String action, String requestMethod){
        // HttpClient client = new DefaultHttpClient();
         InputStream inputStream = null;
         int responsCode = -1;
@@ -87,7 +84,6 @@ public class HueTask extends AsyncTask<HueTaskParams, Void, String> {
             if (responsCode == HttpURLConnection.HTTP_OK) {
                 inputStream = httpConnection.getInputStream();
                 response = getStringFromInputStream(inputStream);
-                Log.i("TAG", response);
             }
         } catch (MalformedURLException e) {
             System.out.println("Exception1");
@@ -98,10 +94,11 @@ public class HueTask extends AsyncTask<HueTaskParams, Void, String> {
             Log.e("TAG", e.getLocalizedMessage());
             //return null;
         }
-        System.out.println("Get last");
+
+        return response;
     }
 
-    void setHueTaskData(String urlString, String action, String requestJson, String requestMethod){
+    public String putHueTaskData(String urlString, String action, String requestJson, String requestMethod){
         try {
             URL url = new URL(urlString + action);
             URLConnection urlConnection = url.openConnection();
@@ -128,6 +125,8 @@ public class HueTask extends AsyncTask<HueTaskParams, Void, String> {
         } catch (IOException e) {
             Log.e("TAG", e.getLocalizedMessage());
         }
+
+        return "";
     }
 
     //

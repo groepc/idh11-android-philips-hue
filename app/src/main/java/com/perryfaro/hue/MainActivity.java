@@ -3,18 +3,25 @@ package com.perryfaro.hue;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.ProgressBar;
 import android.widget.Switch;
 import android.widget.CompoundButton;
 import android.widget.CompoundButton.OnCheckedChangeListener;
 
+import org.json.JSONException;
 import org.json.JSONObject;
 
 public class MainActivity extends AppCompatActivity {
 
-    Switch groupSwitch;
-    String url = "http://192.168.1.127:8080/api/newdeveloper";
+    // elements
+    private Switch groupSwitch;
+    private ProgressBar progressBar;
+
+    private String url = "http://145.48.113.85/api/newdeveloper";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -23,25 +30,41 @@ public class MainActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        HueTaskParams firstParams = new HueTaskParams(url, "/groups/1", "", "GET");
-        HueTask firstHueTask = new HueTask();
-        firstHueTask.execute(firstParams);
-
-        System.out.println(firstHueTask);
-
         groupSwitch = (Switch) findViewById(R.id.groupSwitch);
-        groupSwitch.setChecked(true);
+        progressBar = (ProgressBar) findViewById(R.id.loadingSpinner);
+        progressBar.setIndeterminate(true);
+
+        HueTaskParams firstParams = new HueTaskParams(url, "/groups/1", "", "GET");
+        HueTask initView = (HueTask) new HueTask(new AsyncResponse() {
+            @Override
+            public void processFinish(JSONObject jsonObject) throws JSONException {
+                JSONObject action = jsonObject.getJSONObject("action");
+                Boolean status = action.getBoolean("on");
+
+                System.out.println("STATUS: " + status);
+                System.out.println("STATUS: " + action);
+
+                groupSwitch.setChecked(status);
+                groupSwitch.setVisibility(View.VISIBLE);
+
+                progressBar.setVisibility(View.INVISIBLE);
+            }
+        }).execute(firstParams);
+
+
+
+
         groupSwitch.setOnCheckedChangeListener(new OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if (isChecked) {
-                    HueTaskParams params = new HueTaskParams(url, "/groups/1/action", "{\"on\":true}", "PUT");
-                    HueTask hueTask = new HueTask();
-                    hueTask.execute(params);
-                } else {
-                    HueTaskParams params = new HueTaskParams(url, "/groups/1/action", "{\"on\":false}", "PUT");
-                    HueTask hueTask = new HueTask();
-                    hueTask.execute(params);
+                if(groupSwitch.isShown()) {
+                    HueTaskParams params = new HueTaskParams(url, "/groups/1/action", "{\"on\":"+ isChecked +"}", "PUT");
+                    HueTask hueTask = (HueTask) new HueTask(new AsyncResponse() {
+                        @Override
+                        public void processFinish(JSONObject jsonObject) throws JSONException {
+                            System.out.println("STATUS IN CHANGE:" + jsonObject);
+                        }
+                    }).execute(params);
                 }
             }
         });
@@ -68,5 +91,4 @@ public class MainActivity extends AppCompatActivity {
 
         return super.onOptionsItemSelected(item);
     }
-
 }

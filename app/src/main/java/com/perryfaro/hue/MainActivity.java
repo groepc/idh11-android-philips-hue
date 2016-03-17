@@ -14,7 +14,7 @@ import org.json.JSONObject;
 public class MainActivity extends AppCompatActivity {
 
     Switch groupSwitch;
-    String url = "http://192.168.2.7:8080/api/newdeveloper";
+    String url = "http://192.168.1.127:8080/api/newdeveloper";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

@@ -12,162 +12,182 @@
     tools:context="com.perryfaro.hue.MainActivity"
     tools:showIn="@layout/activity_main">
 
-    <TextView
+    <ScrollView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceMedium"
-        android:text="Group 1"
-        android:id="@+id/groupText"
+        android:id="@+id/scrollView"
+        android:layout_alignParentBottom="true"
         android:layout_alignParentTop="true"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentStart="true"
-        android:visibility="visible" />
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentRight="true"
+        android:fillViewport="true"
+        android:focusableInTouchMode="true">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Group aan of uit"
-        android:id="@+id/groupOnOfText"
-        android:layout_below="@+id/groupText"
-        android:layout_alignParentStart="true"
-        android:layout_marginTop="20dp"
-        android:visibility="visible" />
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
 
-    <Switch
-        android:id="@+id/groupSwitch"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:visibility="visible"
-        android:checked="false"
-        android:layout_alignEnd="@+id/groupText"
-        android:layout_alignBaseline="@+id/groupOnOfText" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:text="Groep 1"
+                android:id="@+id/groupText"
+                android:layout_alignParentTop="true"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentStart="true"
+                android:visibility="visible" />
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Group hue"
-        android:id="@+id/groupHueText"
-        android:layout_below="@+id/groupOnOfText"
-        android:layout_alignParentStart="true"
-        android:layout_marginTop="20dp"
-        android:visibility="visible" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Groep aan of uit"
+                android:id="@+id/groupOnOfText"
+                android:layout_below="@+id/groupText"
+                android:layout_alignParentStart="true"
+                android:layout_marginTop="20dp"
+                android:visibility="visible" />
 
-    <SeekBar
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/groupHueBar"
-        android:layout_marginTop="10dp"
-        android:max="65535"
-        android:layout_below="@+id/groupHueText"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentEnd="true"
-        android:visibility="visible" />
+            <Switch
+                android:id="@+id/groupSwitch"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:visibility="visible"
+                android:checked="false"
+                android:layout_alignEnd="@+id/groupText"
+                android:layout_alignBaseline="@+id/groupOnOfText" />
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Group saturation"
-        android:id="@+id/groupSaturationText"
-        android:layout_marginTop="15dp"
-        android:layout_below="@+id/groupHueBar"
-        android:layout_alignParentStart="true"
-        android:visibility="visible" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Groep hue"
+                android:id="@+id/groupHueText"
+                android:layout_below="@+id/groupOnOfText"
+                android:layout_alignParentStart="true"
+                android:layout_marginTop="20dp"
+                android:visibility="visible" />
 
-    <SeekBar
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/groupSaturationBar"
-        android:layout_below="@+id/groupSaturationText"
-        android:layout_alignParentStart="true"
-        android:layout_marginTop="10dp"
-        android:layout_alignParentEnd="true"
-        android:visibility="visible"
-        android:max="254" />
+            <SeekBar
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/groupHueBar"
+                android:layout_marginTop="10dp"
+                android:max="65535"
+                android:layout_below="@+id/groupHueText"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentEnd="true"
+                android:visibility="visible" />
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceMedium"
-        android:text="Lamp 3"
-        android:id="@+id/lampText"
-        android:layout_alignParentEnd="false"
-        android:layout_alignParentStart="true"
-        android:layout_below="@+id/groupSaturationBar"
-        android:layout_marginTop="30dp"
-        android:visibility="visible" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Groep saturation"
+                android:id="@+id/groupSaturationText"
+                android:layout_marginTop="15dp"
+                android:layout_below="@+id/groupHueBar"
+                android:layout_alignParentStart="true"
+                android:visibility="visible" />
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Lamp aan of uit"
-        android:id="@+id/lampOnOfText"
-        android:layout_below="@+id/lampText"
-        android:layout_alignParentStart="true"
-        android:layout_marginTop="20dp"
-        android:layout_alignParentEnd="true"
-        android:visibility="visible" />
+            <SeekBar
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/groupSaturationBar"
+                android:layout_below="@+id/groupSaturationText"
+                android:layout_alignParentStart="true"
+                android:layout_marginTop="10dp"
+                android:layout_alignParentEnd="true"
+                android:visibility="visible"
+                android:max="254" />
 
-    <Switch
-        android:id="@+id/lampSwitch"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:visibility="visible"
-        android:checked="false"
-        android:layout_alignEnd="@+id/groupText"
-        android:layout_alignBaseline="@+id/lampOnOfText" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:text="Lamp 3"
+                android:id="@+id/lampText"
+                android:layout_alignParentEnd="false"
+                android:layout_alignParentStart="true"
+                android:layout_below="@+id/groupSaturationBar"
+                android:layout_marginTop="30dp"
+                android:visibility="visible" />
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Lamp hue"
-        android:id="@+id/lampHueText"
-        android:layout_below="@+id/lampOnOfText"
-        android:layout_alignParentStart="false"
-        android:layout_marginTop="20dp"
-        android:visibility="visible" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Lamp aan of uit"
+                android:id="@+id/lampOnOfText"
+                android:layout_below="@+id/lampText"
+                android:layout_alignParentStart="true"
+                android:layout_marginTop="20dp"
+                android:layout_alignParentEnd="true"
+                android:visibility="visible" />
 
-    <SeekBar
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/lampHueBar"
-        android:max="65535"
-        android:layout_below="@+id/lampHueText"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentEnd="true"
-        android:layout_marginTop="10dp"
-        android:visibility="visible" />
+            <Switch
+                android:id="@+id/lampSwitch"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:visibility="visible"
+                android:checked="false"
+                android:layout_alignEnd="@+id/groupText"
+                android:layout_alignBaseline="@+id/lampOnOfText" />
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Lamp saturation"
-        android:id="@+id/lampSaturationText"
-        android:layout_below="@+id/lampHueBar"
-        android:layout_alignParentStart="true"
-        android:layout_marginTop="15dp"
-        android:visibility="visible" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Lamp hue"
+                android:id="@+id/lampHueText"
+                android:layout_below="@+id/lampOnOfText"
+                android:layout_alignParentStart="false"
+                android:layout_marginTop="20dp"
+                android:visibility="visible" />
 
-    <SeekBar
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/lampSaturationBar"
-        android:layout_below="@+id/lampSaturationText"
-        android:layout_alignParentStart="true"
-        android:layout_marginTop="10dp"
-        android:layout_alignParentEnd="true"
-        android:visibility="visible"
-        android:max="254" />
+            <SeekBar
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/lampHueBar"
+                android:max="65535"
+                android:layout_below="@+id/lampHueText"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentEnd="true"
+                android:layout_marginTop="10dp"
+                android:visibility="visible" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Lamp saturation"
+                android:id="@+id/lampSaturationText"
+                android:layout_below="@+id/lampHueBar"
+                android:layout_alignParentStart="true"
+                android:layout_marginTop="15dp"
+                android:visibility="visible" />
+
+            <SeekBar
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/lampSaturationBar"
+                android:layout_below="@+id/lampSaturationText"
+                android:layout_alignParentStart="true"
+                android:layout_marginTop="10dp"
+                android:layout_alignParentEnd="true"
+                android:visibility="visible"
+                android:max="254" />
+
+        </RelativeLayout>
+    </ScrollView>
+
 
     <ImageView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/overlayImage"
-        android:layout_centerHorizontal="true"
-        android:layout_alignParentEnd="true"
+        android:background="#ffffff"
+        android:layout_alignParentBottom="true"
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
-        android:layout_alignParentBottom="true"
-        android:background="#ffffff" />
+        android:layout_alignEnd="@+id/scrollView"
+        android:contentDescription="overlay image"
+        android:visibility="invisible" />
 
     <ProgressBar
         android:layout_width="wrap_content"

@@ -3,19 +3,21 @@ package com.perryfaro.hue;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.CompoundButton;
+import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.ImageView;
+import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.SeekBar;
 import android.widget.Switch;
-import android.widget.CompoundButton;
-import android.widget.CompoundButton.OnCheckedChangeListener;
 
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import java.util.Iterator;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -28,12 +30,9 @@ public class MainActivity extends AppCompatActivity {
     private SeekBar groupHueBar;
     private SeekBar groupSaturationBar;
 
-    // lamp elements
-    private Switch lampSwitch;
-    private SeekBar lampHueBar;
-    private SeekBar lampSaturationBar;
+    private ListView listViewLight;
 
-    private String url = "http://192.168.178.17/api/newdeveloper";
+    private String url = "http://192.168.1.68:8080/api/newdeveloper";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,6 +40,35 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
+        listViewLight = (ListView) findViewById(R.id.listView);
+
+
+        HueTaskParams initLightsParams = new HueTaskParams(url, "/lights", "", "GET");
+        HueTask initLightsView = (HueTask) new HueTask();
+        initLightsView.setDelegate(new AsyncResponse() {
+            @Override
+            public void processFinish(JSONObject jsonObject) throws JSONException {
+                System.out.println("listview");
+
+                String[] stringArray = new String[jsonObject.length()];
+                Iterator<String> iter = jsonObject.keys();
+                Integer  counter =0;
+                while (iter.hasNext()) {
+                    String key = iter.next();
+                    stringArray[counter]= key;
+                    counter++;
+                }
+
+                System.out.println("listview");
+
+                System.out.print(stringArray);
+
+                listViewLight.setAdapter(new LightAdapter(getBaseContext(), stringArray, url));
+            }
+        });
+        initLightsView.execute(initLightsParams);
+
 
         // find starting elements
         overlayImage = (ImageView) findViewById(R.id.overlayImage);
@@ -51,10 +79,6 @@ public class MainActivity extends AppCompatActivity {
         groupHueBar = (SeekBar) findViewById(R.id.groupHueBar);
         groupSaturationBar = (SeekBar) findViewById(R.id.groupSaturationBar);
 
-        // find lamp elements
-        lampSwitch = (Switch) findViewById(R.id.lampSwitch);
-        lampHueBar = (SeekBar) findViewById(R.id.lampHueBar);
-        lampSaturationBar = (SeekBar) findViewById(R.id.lampSaturationBar);
 
         // fist initialize group status
         HueTaskParams initGroupParams = new HueTaskParams(url, "/groups/1", "", "GET");
@@ -77,29 +101,6 @@ public class MainActivity extends AppCompatActivity {
             }
         });
         initGroupView.execute(initGroupParams);
-
-        HueTaskParams initLampParams = new HueTaskParams(url, "/lights/3", "", "GET");
-        HueTask initLampView = (HueTask) new HueTask();
-        initLampView.setDelegate(new AsyncResponse() {
-            @Override
-            public void processFinish(JSONObject jsonObject) throws JSONException {
-                JSONObject state = jsonObject.getJSONObject("state");
-
-
-
-                Boolean lampStatus = state.getBoolean("on");
-                Integer lampHue = state.getInt("hue");
-                Integer lampSaturation = state.getInt("sat");
-
-                lampSwitch.setChecked(lampStatus);
-                lampHueBar.setProgress(lampHue);
-                lampSaturationBar.setProgress(lampSaturation);
-
-                hideProgressOverlay();
-                setLampEventListeners();
-            }
-        });
-        initLampView.execute(initLampParams);
 
     }
 
@@ -140,54 +141,6 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
                 HueTaskParams params = new HueTaskParams(url, "/groups/1/action", "{\"sat\":" + progress + "}", "PUT");
-                HueTask hueTask = new HueTask();
-                hueTask.execute(params);
-            }
-
-            @Override
-            public void onStartTrackingTouch(SeekBar seekBar) {
-
-            }
-
-            @Override
-            public void onStopTrackingTouch(SeekBar seekBar) {
-
-            }
-        });
-    }
-
-    public void setLampEventListeners() {
-        lampSwitch.setOnCheckedChangeListener(new OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                HueTaskParams params = new HueTaskParams(url, "/lights/3/state", "{\"on\":"+ isChecked +"}", "PUT");
-                HueTask hueTask = (HueTask) new HueTask().execute(params);
-            }
-        });
-
-        lampHueBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
-            @Override
-            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                HueTaskParams params = new HueTaskParams(url, "/lights/3/state", "{\"hue\":" + progress + "}", "PUT");
-                HueTask hueTask = new HueTask();
-                hueTask.execute(params);
-            }
-
-            @Override
-            public void onStartTrackingTouch(SeekBar seekBar) {
-
-            }
-
-            @Override
-            public void onStopTrackingTouch(SeekBar seekBar) {
-
-            }
-        });
-
-        lampSaturationBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
-            @Override
-            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                HueTaskParams params = new HueTaskParams(url, "/lights/3/state", "{\"sat\":" + progress + "}", "PUT");
                 HueTask hueTask = new HueTask();
                 hueTask.execute(params);
             }

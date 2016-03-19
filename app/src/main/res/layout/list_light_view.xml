@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent" android:layout_height="match_parent">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="Lamp 3"
+        android:id="@+id/lampText"
+        android:layout_alignParentEnd="false"
+        android:layout_alignParentStart="true"
+        android:layout_below="@+id/groupSaturationBar"
+        android:layout_marginTop="30dp"
+        android:visibility="visible" />
+    <LinearLayout
+        android:id="@+id/light"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/lampText"
+        android:orientation="horizontal"
+        android:weightSum="4" >
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Lamp aan of uit"
+        android:id="@+id/lampOnOfText"
+        android:layout_alignParentStart="true"
+
+        android:layout_alignParentEnd="true"
+        android:visibility="visible"
+        android:layout_weight="3"/>
+
+    <Switch
+        android:id="@+id/lampSwitch"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="visible"
+        android:checked="false"
+        android:layout_alignBaseline="@+id/lampOnOfText" />
+</LinearLayout>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Lamp hue"
+        android:id="@+id/lampHueText"
+        android:layout_below="@+id/light"
+        android:layout_alignParentStart="false"
+        android:layout_marginTop="20dp"
+        android:visibility="visible" />
+
+    <SeekBar
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/lampHueBar"
+        android:max="65535"
+        android:layout_below="@+id/lampHueText"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginTop="10dp"
+        android:visibility="visible" />
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Lamp saturation"
+        android:id="@+id/lampSaturationText"
+        android:layout_below="@+id/lampHueBar"
+        android:layout_alignParentStart="true"
+        android:layout_marginTop="15dp"
+        android:visibility="visible" />
+
+    <SeekBar
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/lampSaturationBar"
+        android:layout_below="@+id/lampSaturationText"
+        android:layout_alignParentStart="true"
+        android:layout_marginTop="10dp"
+        android:layout_alignParentEnd="true"
+        android:visibility="visible"
+        android:max="254" />
+</RelativeLayout>

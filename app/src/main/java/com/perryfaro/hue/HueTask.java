@@ -21,7 +21,7 @@ public class HueTask extends AsyncTask<HueTaskParams, Void, String> {
 
     private AsyncResponse delegate = null;
 
-    public HueTask(AsyncResponse delegate) {
+    public void setDelegate(AsyncResponse delegate) {
         this.delegate = delegate;
     }
 
@@ -49,12 +49,14 @@ public class HueTask extends AsyncTask<HueTaskParams, Void, String> {
         // parse JSON and inform caller
         JSONObject jsonObject;
 
+
         try {
             jsonObject = new JSONObject(response);
             delegate.processFinish(jsonObject);
         } catch( JSONException ex) {
             Log.e("TAG", ex.getLocalizedMessage());
         }
+
     }
 
     public String getHueTaskData(String urlString, String action, String requestMethod){

@@ -12,13 +12,6 @@
     tools:context="com.perryfaro.hue.MainActivity"
     tools:showIn="@layout/activity_main">
 
-    <ProgressBar
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/loadingSpinner"
-        android:layout_centerVertical="true"
-        android:layout_centerHorizontal="true" />
-
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -27,7 +20,8 @@
         android:id="@+id/groupText"
         android:layout_alignParentTop="true"
         android:layout_alignParentEnd="true"
-        android:layout_alignParentStart="true" />
+        android:layout_alignParentStart="true"
+        android:visibility="visible" />
 
     <TextView
         android:layout_width="wrap_content"
@@ -36,7 +30,8 @@
         android:id="@+id/groupOnOfText"
         android:layout_below="@+id/groupText"
         android:layout_alignParentStart="true"
-        android:layout_marginTop="20dp" />
+        android:layout_marginTop="20dp"
+        android:visibility="visible" />
 
     <Switch
         android:id="@+id/groupSwitch"
@@ -54,17 +49,19 @@
         android:id="@+id/groupHueText"
         android:layout_below="@+id/groupOnOfText"
         android:layout_alignParentStart="true"
-        android:layout_marginTop="20dp" />
+        android:layout_marginTop="20dp"
+        android:visibility="visible" />
 
     <SeekBar
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/groupHueBar"
         android:layout_marginTop="10dp"
-        android:max="254"
+        android:max="65535"
         android:layout_below="@+id/groupHueText"
         android:layout_alignParentStart="true"
-        android:layout_alignParentEnd="true" />
+        android:layout_alignParentEnd="true"
+        android:visibility="visible" />
 
     <TextView
         android:layout_width="wrap_content"
@@ -73,7 +70,8 @@
         android:id="@+id/groupSaturationText"
         android:layout_marginTop="15dp"
         android:layout_below="@+id/groupHueBar"
-        android:layout_alignParentStart="true" />
+        android:layout_alignParentStart="true"
+        android:visibility="visible" />
 
     <SeekBar
         android:layout_width="wrap_content"
@@ -82,7 +80,9 @@
         android:layout_below="@+id/groupSaturationText"
         android:layout_alignParentStart="true"
         android:layout_marginTop="10dp"
-        android:layout_alignParentEnd="true" />
+        android:layout_alignParentEnd="true"
+        android:visibility="visible"
+        android:max="254" />
 
     <TextView
         android:layout_width="wrap_content"
@@ -93,7 +93,8 @@
         android:layout_alignParentEnd="false"
         android:layout_alignParentStart="true"
         android:layout_below="@+id/groupSaturationBar"
-        android:layout_marginTop="30dp" />
+        android:layout_marginTop="30dp"
+        android:visibility="visible" />
 
     <TextView
         android:layout_width="wrap_content"
@@ -103,7 +104,8 @@
         android:layout_below="@+id/lampText"
         android:layout_alignParentStart="true"
         android:layout_marginTop="20dp"
-        android:layout_alignParentEnd="true" />
+        android:layout_alignParentEnd="true"
+        android:visibility="visible" />
 
     <Switch
         android:id="@+id/lampSwitch"
@@ -121,17 +123,19 @@
         android:id="@+id/lampHueText"
         android:layout_below="@+id/lampOnOfText"
         android:layout_alignParentStart="false"
-        android:layout_marginTop="20dp" />
+        android:layout_marginTop="20dp"
+        android:visibility="visible" />
 
     <SeekBar
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/lampHueBar"
-        android:max="254"
+        android:max="65535"
         android:layout_below="@+id/lampHueText"
         android:layout_alignParentStart="true"
         android:layout_alignParentEnd="true"
-        android:layout_marginTop="10dp" />
+        android:layout_marginTop="10dp"
+        android:visibility="visible" />
 
     <TextView
         android:layout_width="wrap_content"
@@ -140,7 +144,8 @@
         android:id="@+id/lampSaturationText"
         android:layout_below="@+id/lampHueBar"
         android:layout_alignParentStart="true"
-        android:layout_marginTop="15dp" />
+        android:layout_marginTop="15dp"
+        android:visibility="visible" />
 
     <SeekBar
         android:layout_width="wrap_content"
@@ -149,6 +154,28 @@
         android:layout_below="@+id/lampSaturationText"
         android:layout_alignParentStart="true"
         android:layout_marginTop="10dp"
-        android:layout_alignParentEnd="true" />
+        android:layout_alignParentEnd="true"
+        android:visibility="visible"
+        android:max="254" />
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/overlayImage"
+        android:layout_centerHorizontal="true"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentBottom="true"
+        android:background="#ffffff" />
+
+    <ProgressBar
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/loadingSpinner"
+        android:layout_centerVertical="true"
+        android:layout_centerHorizontal="true"
+        android:visibility="visible"
+        android:indeterminate="true" />
 
 </RelativeLayout>

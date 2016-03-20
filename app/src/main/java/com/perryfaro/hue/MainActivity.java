@@ -32,7 +32,7 @@ public class MainActivity extends AppCompatActivity {
 
     private ListView listViewLight;
 
-    private String url = "http://192.168.1.68:8080/api/newdeveloper";
+    private String url = "http://192.168.178.17/api/newdeveloper";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

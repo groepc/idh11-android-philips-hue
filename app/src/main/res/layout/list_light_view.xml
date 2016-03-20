@@ -13,13 +13,7 @@
         android:layout_below="@+id/groupSaturationBar"
         android:layout_marginTop="30dp"
         android:visibility="visible" />
-    <LinearLayout
-        android:id="@+id/light"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/lampText"
-        android:orientation="horizontal"
-        android:weightSum="4" >
+
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -27,25 +21,27 @@
         android:id="@+id/lampOnOfText"
         android:layout_alignParentStart="true"
 
-        android:layout_alignParentEnd="true"
+        android:layout_alignParentEnd="false"
         android:visibility="visible"
-        android:layout_weight="3"/>
+        android:layout_weight="3"
+        android:layout_below="@+id/lampText"
+        android:layout_marginTop="20dp" />
 
     <Switch
-        android:id="@+id/lampSwitch"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:visibility="visible"
-        android:checked="false"
-        android:layout_alignBaseline="@+id/lampOnOfText" />
-</LinearLayout>
+    android:id="@+id/lampSwitch"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:visibility="visible"
+    android:checked="false"
+    android:layout_alignBaseline="@+id/lampOnOfText"
+        android:layout_alignParentEnd="true" />
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Lamp hue"
         android:id="@+id/lampHueText"
-        android:layout_below="@+id/light"
+        android:layout_below="@+id/lampOnOfText"
         android:layout_alignParentStart="false"
         android:layout_marginTop="20dp"
         android:visibility="visible" />
